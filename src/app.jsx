@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from "react-redux";
-import firebase from './firebase/index.js';
+// import firebase from './firebase/index.js';
 
 import Home from './components/Home.jsx';
 

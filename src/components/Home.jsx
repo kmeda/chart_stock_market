@@ -7,8 +7,21 @@ class Home extends Component {
 
   render(){
     return (
-      <div>
-        Start Here...
+      <div className="sk-container">
+        <div className="sk-header"></div>
+        <div className="sk-inner-wrapper">
+
+          <div className="sk-chart-component-container"></div>
+          <div className="sk-chart-list-container">
+            <div className="sk-chart-list-header"><div className="sk-stock-search"></div></div>
+            <div className="sk-chart-list-odd"></div>
+            <div className="sk-chart-list-even"></div>
+              <div className="sk-chart-list-odd"></div>
+              <div className="sk-chart-list-even"></div>
+                <div className="sk-chart-list-odd"></div>
+                <div className="sk-chart-list-even"></div>
+          </div>
+        </div>
       </div>
     )
   }

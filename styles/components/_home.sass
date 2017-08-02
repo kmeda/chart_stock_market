@@ -1,3 +1,56 @@
 body
   padding: 0
   margin: 0
+
+.sk-container
+  width: 100%
+  min-height: 100vh
+  background-color: #464545
+  padding-bottom: 25px
+  .sk-header
+    height: 50px
+    width: 100%
+  .sk-inner-wrapper
+    width: 1150px
+    height: auto
+    margin-left: auto
+    margin-right: auto
+    .sk-chart-component-container
+      height: 500px
+      width: 100%
+      background-color: #181818
+      box-shadow: 0 10px 15px rgba(0,0,0,0.8)
+    .sk-chart-list-container
+      margin-top: 20px
+      height: auto
+      width: 100%
+      background-color: rgba(0,0,0,0.3)
+      box-shadow: 0 10px 15px rgba(0,0,0,0.8)
+
+      .sk-chart-list-header
+        position: relative
+        height: 35px
+        width: 100%
+        background-color: #d1d1d1
+        border-bottom: 2px solid black
+
+        .sk-stock-search
+          position: absolute
+          height: 40px
+          width: 250px
+          background-color: white
+          transform: translate(-5px, -5px)
+          box-shadow: 5px 2px 10px rgba(0,0,0,0.8)
+
+      .sk-chart-list-odd
+        height: 40px
+        width: 100%
+        background-color: #373737
+        &:hover
+          border-left: 3px solid #f16212
+      .sk-chart-list-even
+        height: 40px
+        width: 100%
+        background-color: #4b4b4b
+        &:hover
+          border-left: 3px solid #f16212
