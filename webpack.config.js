@@ -14,7 +14,7 @@ try {
 
 const VENDOR_LIBS = [
   'react', 'redux', 'react-redux', 'react-dom',
-  'redux-form', 'redux-thunk', 'react-router-dom','firebase'
+  'redux-form', 'redux-thunk', 'react-router-dom','firebase','lodash'
 ];
 
 module.exports = {

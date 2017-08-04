@@ -1,13 +1,14 @@
 import * as Redux from 'redux';
 import thunk from 'redux-thunk';
 
-import {  placeHolderReducer
+import {  stockCodesReducer, searchListReducer
           } from '../reducers/reducers.jsx';
 
 export var configure = (initialState = {}) => {
 
   var reducer = Redux.combineReducers({
-    placeHolder: placeHolderReducer
+    stockCodes: stockCodesReducer,
+    searchList: searchListReducer
   });
 
   var store = Redux.createStore(
