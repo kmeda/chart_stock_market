@@ -12,18 +12,21 @@ class Search extends Component {
   }
 
 
-  onSearch(){
+
+  handleSearch(){
     var {dispatch, stockCodes} = this.props;
 
     var search = _.trim(this.refs.searchTerm.value.toLowerCase());
+    dispatch(actions.setSearchTerm(this.refs.searchTerm.value));
 
     if (search === '' || search.length < 2) {
       dispatch(actions.setSearchList([]));
       return;
     } else {
+
       var filteredList = stockCodes.filter((item)=>{
-        var symbol = item["symbol"].toLowerCase();
-        var name  = item["name"].toLowerCase();
+        var symbol = item["Symbol"].toLowerCase();
+        var name  = item["Company Name"].toLowerCase();
         var stockInfo = symbol + ' ' + name;
 
         return stockInfo.indexOf(search) > -1;
@@ -31,22 +34,35 @@ class Search extends Component {
 
       //dispatch an action to update state
       dispatch(actions.setSearchList(filteredList.slice(0,10)))
-
-
     }
+  }
+
+  handleSubmit(e){
+    e.preventDefault();
+    var {dispatch, searchTerm} = this.props;
+
+    if (searchTerm === '') {
+      return;
+    }
+
+    dispatch(actions.getStockDataAndPushToFirebase(searchTerm));
+
+    //if error ? throw error else update state with stock data
+    dispatch(actions.clearSearchList());
+    dispatch(actions.clearSearchTerm());
   }
 
   render(){
 
     return (
       <div>
-        <form>
+        <form onSubmit={this.handleSubmit.bind(this)}>
           <input
             className="sk-stock-search"
             placeholder="Search Stock.."
-            onChange={this.onSearch.bind(this)}
+            onChange={this.handleSearch.bind(this)}
             ref="searchTerm"/>
-          <button className="sk-stock-search-btn" onClick={(e)=> e.preventDefault()}>Go</button>
+          <button className="sk-stock-search-btn" onClick={this.handleSubmit.bind(this)}>Go</button>
       </form>
     </div>
   );
@@ -56,7 +72,9 @@ class Search extends Component {
 export default Redux.connect(
   (state)=>{
     return {
-      stockCodes: state.stockCodes
+      stockCodes: state.stockCodes,
+      searchList: state.searchList,
+      searchTerm: state.searchTerm
     }
   }
 )(Search);

@@ -2,6 +2,7 @@ body
   padding: 0
   margin: 0
 
+
 .sk-container
   width: 100%
   min-height: 100vh
@@ -29,43 +30,71 @@ body
 
       .sk-chart-list-header
         position: relative
-        height: 30px
+        height: 22px
         width: 100%
         background-color: #bdbdbd
         border-bottom: 2px solid
-        p
-          margin-left: 300px
-
-        .sk-stock-search
-          // display: none
+        .sk-loading-prog
           position: absolute
           height: 28px
           width: 250px
           background-color: white
-          box-shadow: 3px 0 10px rgba(0,0,0,0.8)
+          box-shadow: 5px 0 10px rgba(0,0,0,0.8)
+          transform: translateY(-7px)
+          i
+            margin-top: 5px
+            margin-right: 5px
+            margin-left: 5px
+          span
+            font-family: "Fira sans"
+
+
+        .sk-stock-search
+          position: absolute
+          height: 28px
+          width: 250px
+          background-color: white
+          box-shadow: 5px 0 10px rgba(0,0,0,0.8)
           border: none
           font-size: 1.1em
-          padding-left: 10px
+          padding-left: 5px
+          transform: translateY(-8px)
           &:focus
             outline: none
         .sk-stock-search-btn
           position: absolute
-          border-radius: 2px
           border: none
           width: 50px
           height: 30px
           background-color: #f16212
-          transform: skewX(-22deg) translateX(220px)
+          transform: skewX(-22deg) translate(218px, -8px)
           cursor: pointer
-          box-shadow: inset 0 0 10px rgba(0,0,0,0.5)
+          box-shadow: inset 0 0 10px rgba(0,0,0,0.5), 5px 0 5px rgba(0,0,0,0.5)
+          font-size: 0.9em
           &:focus
             outline: none
+          &:hover
+            font-size: 1em
+          &:active
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 5px 0 5px rgba(0,0,0,0.5)
         .sk-search-list
           position: absolute
           max-height: 300px
           width: 350px
           background-color: white
-          transform: translateY(5px)
+          transform: translateY(-10px)
+        .sk-list-item
+          width: 98%
+          height: auto
+          list-style: none
+          font-family: 'Fira sans'
+          cursor: pointer
+          margin-bottom: 5px
+          margin-left: 5px
+          &:hover
+            text-decoration: underline
+          .sk-list-item-child2
+            font-size: 0.9em
 
       .sk-chart-list-odd
         height: 35px

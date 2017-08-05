@@ -9,25 +9,37 @@ class SearchList extends Component {
     super(props);
   }
 
+  handleClick(code){
+    var {dispatch} = this.props;
+
+    // dispatch action to call api to get data
+    dispatch(actions.getStockData(code));
+    // dispatch action to add stock data to redux state
+
+    // dispatch action to clear search results
+    dispatch(actions.clearSearchList());
+
+  }
+
 
   render(){
 
   if (this.props.list.length > 0) {
-    console.log(this.props.list);
-
     return (
-      <ul>
+      <div>
       {
-        this.props.list.map((item)=>{
-          return <li>{item.name}</li>
+        this.props.list.map((item, index)=>{
+          return <div className="sk-list-item" key={index} onClick={this.handleClick.bind(this, item["Symbol"])}>
+            <span>{item["Symbol"]}, </span>
+            <span className="sk-list-item-child2">{item["Company Name"]}</span>
+          </div>
         })
       }
-    </ul>
+    </div>
   );
   } else {
     return <div></div>
   }
-
   }
 }
 
