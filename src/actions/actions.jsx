@@ -48,22 +48,29 @@ export var clearSearchList = ()=>{
 //Fetch data for specific stock and set state
 export var getStockDataAndPushToFirebase = (code)=>{
   return (dispatch, getState)=>{
-    var url = `https://www.quandl.com/api/v3/datasets/WIKI/${code.toUpperCase()}/data.json?start_date=2016-08-01api_key=process.env.API_KEY`;
-    axios.get(url).then((res)=>{
-      var stockData = {...res, symbol: code.toUpperCase()}
+
+    var stockData;
+    var fetchStockData = axios.get(`http://localhost:3050/quandl_api?code=${code}`).then((res)=>{
+      stockData = {symbol: code.toUpperCase(), ...res.data.data};
       console.log(stockData);
-      dispatch(addStockData(stockData));
 
-    // DISPATCH AN ACTION TO PUSH SYMBOL TO FIREBASE
+  }, (error)=> alert(`No response from server. Please try again.`));
 
-
-    },(error)=> alert(`Incorrect request code or Data not found for ${code.toUpperCase()}`));
+    fetchStockData.then(()=>{
+      if (Object.keys(stockData).length < 2) {
+        alert(`Incorrect Stock code or Data not supplied by API for ${code.toUpperCase()}.`);
+        return;
+      } else {
+        dispatch(addStockData(stockData));
+        // DISPATCH AN ACTION TO PUSH SYMBOL TO FIREBASE
+      }
+    });
   }
 }
 
 export var updateClientWithStockData = (code)=>{
   return (dispatch, getState)=>{
-    var url = `https://www.quandl.com/api/v3/datasets/WIKI/${code.toUpperCase()}/data.json?start_date=2016-08-01api_key=process.env.API_KEY`;
+    var url = `https://www.quandl.com/api/v3/datasets/WIKI/${code.toUpperCase()}/data.json?start_date=2016-08-01&api_key=process.env.API_KEY`;
     axios.get(url).then((res)=>{
       var stockData = {...res, symbol: code.toUpperCase()}
       console.log(stockData);

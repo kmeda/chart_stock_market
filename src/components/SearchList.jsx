@@ -13,7 +13,7 @@ class SearchList extends Component {
     var {dispatch} = this.props;
 
     // dispatch action to call api to get data
-    dispatch(actions.getStockData(code));
+    dispatch(actions.getStockDataAndPushToFirebase(code));
     // dispatch action to add stock data to redux state
 
     // dispatch action to clear search results
