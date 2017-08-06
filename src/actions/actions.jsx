@@ -50,7 +50,7 @@ export var getStockDataAndPushToFirebase = (code)=>{
   return (dispatch, getState)=>{
 
     var stockData;
-    var fetchStockData = axios.get(`http://localhost:3050/quandl_api/get_stock?code=${code}`).then((res)=>{
+    var fetchStockData = axios.get(`https://chart-stocks-fcc.herokuapp.com/quandl_api/get_stock?code=${code}`).then((res)=>{
       stockData = {symbol: code, ...res.data.data};
       console.log(stockData);
 
@@ -87,7 +87,7 @@ export var updateClientWithStockData = (filteredStocks, newSymbols)=>{
     var newStockData = filteredStocks;
 
     var getAllStocks = newSymbols.map((symbol)=>{
-      var url = `http://localhost:3050/quandl_api/get_stock?code=${symbol}`;
+      var url = `https://chart-stocks-fcc.herokuapp.com/quandl_api/get_stock?code=${symbol}`;
       return axios.get(url).then((res)=>{
         var stockData = {...res, symbol: symbol}
         newStockData.push(stockData);
