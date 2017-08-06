@@ -40,14 +40,15 @@ class Home extends Component {
     // dispatch get request and add stock data to state
     if (nextProps.symbolsActive.length !== this.props.symbolsActive.length) {
 
-      console.log("Realtime Update: " + nextProps.symbolsActive);
+      // console.log("Realtime Update: " + nextProps.symbolsActive);
 
       var {dispatch, stockData} = this.props;
 
       var filteredStocks = stockData.filter((stock)=>{
           return _.includes(nextProps.symbolsActive, stock.symbol);
       });
-      console.log("Stocks currently active on all clients: "+filteredStocks);
+      //dispatch(actions.addStockData(filteredStocks));
+      // console.log("Stocks currently active on all clients: "+filteredStocks);
 
       // send filtered data and stock codes not in current state
       var currentSymbols = stockData.map((symbol)=>{
