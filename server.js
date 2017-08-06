@@ -13,7 +13,7 @@ res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Ty
 next();
 });
 
-app.get("/quandl_api", (req, res) => {
+app.get("/quandl_api/get_stock", (req, res) => {
 
   //make the request here with request parameters and send json response back
 
@@ -30,6 +30,7 @@ app.get("/quandl_api", (req, res) => {
     res.send(err);
   });
 });
+
 
 if (process.env.NODE_ENV !== 'production') {
   const webpackMiddleware = require('webpack-dev-middleware');

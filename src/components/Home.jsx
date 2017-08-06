@@ -14,6 +14,11 @@ class Home extends Component {
 
   }
 
+  componentWillMount(){
+    this.props.dispatch(actions.getStockCodes());
+    this.props.dispatch(actions.fetchSymbols());
+  }
+
   componentWillReceiveProps(nextProps){
     //listening to props from firebase
     //when user adds or removes a stock I receive the stock codes.
@@ -24,26 +29,28 @@ class Home extends Component {
     //Remove operation
       // map through the state
       // filter if stock code not in props
-      // dispatch filtered payload
+      // dispatch filtered payload removing stocks
 
     //Add Operation
     // for each of the stock codes
     // map through the state
     // if stock code not in props
     // dispatch get request and add stock data to state
-
+    // console.log("newProps: " + this.props.symbolsActive);
+    //console.log(nextProps.stockSymbols);
 
   }
 
   render(){
-        var {searchList, stockCodes} = this.props;
+
+        var {stockCodes} = this.props;
 
         var stockSymbolsLoad = ()=>{
             if (stockCodes.length > 0) {
               return <Search />;
             } else {
               return <div className="sk-loading-prog">
-                <i className="fa fa-refresh fa-spin fa-fw"></i>
+                <i className="fa fa-refresh fa-spin QQfa-fw"></i>
                 <span>Loading Stock Symbols...</span>
               </div>
             }
@@ -62,7 +69,7 @@ class Home extends Component {
               {stockSymbolsLoad()}
 
               <div className="sk-search-list">
-                <SearchList list={this.props.searchList}/>
+                <SearchList />
               </div>
             </div>
 
@@ -85,7 +92,6 @@ class Home extends Component {
 export default Redux.connect(
   (state)=>{
     return {
-      searchList: state.searchList,
       stockCodes: state.stockCodes
     }
   }

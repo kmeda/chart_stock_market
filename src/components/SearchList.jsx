@@ -24,11 +24,11 @@ class SearchList extends Component {
 
   render(){
 
-  if (this.props.list.length > 0) {
+  if (this.props.searchList.length > 0) {
     return (
       <div>
       {
-        this.props.list.map((item, index)=>{
+        this.props.searchList.map((item, index)=>{
           return <div className="sk-list-item" key={index} onClick={this.handleClick.bind(this, item["Symbol"])}>
             <span>{item["Symbol"]}, </span>
             <span className="sk-list-item-child2">{item["Company Name"]}</span>
@@ -43,4 +43,10 @@ class SearchList extends Component {
   }
 }
 
-export default Redux.connect()(SearchList);
+export default Redux.connect(
+  (state)=>{
+    return {
+      searchList: state.searchList
+    }
+  }
+)(SearchList);

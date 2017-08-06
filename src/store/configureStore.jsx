@@ -4,7 +4,8 @@ import thunk from 'redux-thunk';
 import {  stockCodesReducer,
           searchListReducer,
           searchTermReducer,
-          stockDataReducer
+          stockDataReducer,
+          symbolsActiveReducer
           } from '../reducers/reducers.jsx';
 
 export var configure = (initialState = {}) => {
@@ -13,7 +14,8 @@ export var configure = (initialState = {}) => {
     stockCodes: stockCodesReducer,
     searchList: searchListReducer,
     searchTerm: searchTermReducer,
-    stockData: stockDataReducer
+    stockData: stockDataReducer,
+    symbolsActive: symbolsActiveReducer
   });
 
   var store = Redux.createStore(

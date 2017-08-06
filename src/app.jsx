@@ -9,8 +9,13 @@ import '../styles/main.scss';
 const actions = require('./actions/actions.jsx');
 var store = require('./store/configureStore.jsx').configure();
 
-store.dispatch(actions.getStockCodes());
 
+var fetchStockSymbols = firebaseRef.child("symbolsActive");
+fetchStockSymbols.on("value", (data)=>{
+  if (data.exists()) {
+    store.dispatch(actions.fetchSymbols());
+  }
+});
 
 ReactDOM.render(
   <Provider store={store}>

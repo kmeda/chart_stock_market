@@ -17,7 +17,8 @@ class Search extends Component {
     var {dispatch, stockCodes} = this.props;
 
     var search = _.trim(this.refs.searchTerm.value.toLowerCase());
-    dispatch(actions.setSearchTerm(this.refs.searchTerm.value));
+
+    dispatch(actions.setSearchTerm(this.refs.searchTerm.value.toUpperCase()));
 
     if (search === '' || search.length < 2) {
       dispatch(actions.setSearchList([]));
@@ -33,23 +34,31 @@ class Search extends Component {
       });
 
       //dispatch an action to update state
-      dispatch(actions.setSearchList(filteredList.slice(0,10)))
+      dispatch(actions.setSearchList(filteredList.slice(0,25)))
     }
   }
 
   handleSubmit(e){
     e.preventDefault();
-    var {dispatch, searchTerm} = this.props;
+    var {dispatch, searchTerm, symbolsActive, stockData} = this.props;
 
-    if (searchTerm === '') {
+    if (searchTerm === '' || searchTerm.length < 2) {
       return;
     }
 
-    dispatch(actions.getStockDataAndPushToFirebase(searchTerm));
+    if (_.includes(symbolsActive, searchTerm)) {
+      alert("Symbol already added.");
+      return;
+    } else {
+      dispatch(actions.getStockDataAndPushToFirebase(searchTerm));
+    }
 
     //if error ? throw error else update state with stock data
     dispatch(actions.clearSearchList());
-    dispatch(actions.clearSearchTerm());
+    {/*dispatch(actions.clearSearchTerm());
+    if (searchTerm === '') {
+      this.refs.searchTerm.value = '';
+    }*/}
   }
 
   render(){
@@ -74,7 +83,9 @@ export default Redux.connect(
     return {
       stockCodes: state.stockCodes,
       searchList: state.searchList,
-      searchTerm: state.searchTerm
+      searchTerm: state.searchTerm,
+      symbolsActive: state.symbolsActive,
+      stockData: state.stockData
     }
   }
 )(Search);

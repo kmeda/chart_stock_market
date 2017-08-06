@@ -40,3 +40,12 @@ export var stockDataReducer = (state=[], action)=>{
 
   }
 }
+
+export var symbolsActiveReducer = (state=[], action)=>{
+  switch (action.type) {
+    case "ADD_CUURENTLY_ACTIVE_SYMBOLS":
+      return action.payload
+    default:
+    return state;
+  }
+}
