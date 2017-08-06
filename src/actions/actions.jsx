@@ -76,14 +76,20 @@ export var addStockCodeToFirebase = (code)=>{
   }
 }
 
-export var updateClientWithStockData = (code)=>{
+
+// get filteredstock data and new stock codes - fetch new stockdata - dispatch combined data to state.
+
+export var updateClientWithStockData = (filteredStocks, newSymbols)=>{
   return (dispatch, getState)=>{
-    var url = `https://www.quandl.com/api/v3/datasets/WIKI/${code}/data.json?start_date=2016-08-01&api_key=process.env.API_KEY`;
-    axios.get(url).then((res)=>{
-      var stockData = {...res, symbol: code}
-      console.log(stockData);
-      dispatch(addStockData(stockData));
-    },(error)=> alert(`Incorrect request code or Data not found for ${code}`));
+    console.log("Current stocks on all clients: " + filteredStocks);
+    console.log("Stock data to be added for: "+ newSymbols);
+
+    // var url = `https://www.quandl.com/api/v3/datasets/WIKI/${code}/data.json?start_date=2016-08-01&api_key=process.env.API_KEY`;
+    // axios.get(url).then((res)=>{
+    //   var stockData = {...res, symbol: code}
+    //   console.log(stockData);
+    //   dispatch(addStockData(stockData));
+    // },(error)=> alert(`Incorrect request code or Data not found for ${code}`));
   }
 }
 
@@ -103,7 +109,6 @@ export var fetchSymbols = ()=>{
     getSymbols.once("value", (data)=>{
       if (data.exists()) {
         var symbols = Object.values(data.val());
-        console.log("Currently active symbols: "+symbols);
         dispatch(addCurrentlyActiveSymbols(symbols));
       }
     });

@@ -23,6 +23,7 @@ class Search extends Component {
     if (search === '' || search.length < 2) {
       dispatch(actions.setSearchList([]));
       return;
+
     } else {
 
       var filteredList = stockCodes.filter((item)=>{
@@ -40,12 +41,12 @@ class Search extends Component {
 
   handleSubmit(e){
     e.preventDefault();
-    var {dispatch, searchTerm, symbolsActive, stockData} = this.props;
+    var {dispatch, searchTerm, symbolsActive} = this.props;
 
     if (searchTerm === '' || searchTerm.length < 2) {
       return;
     }
-
+    //if error ? throw error else update state with stock data
     if (_.includes(symbolsActive, searchTerm)) {
       alert("Symbol already added.");
       return;
@@ -53,12 +54,7 @@ class Search extends Component {
       dispatch(actions.getStockDataAndPushToFirebase(searchTerm));
     }
 
-    //if error ? throw error else update state with stock data
     dispatch(actions.clearSearchList());
-    {/*dispatch(actions.clearSearchTerm());
-    if (searchTerm === '') {
-      this.refs.searchTerm.value = '';
-    }*/}
   }
 
   render(){
@@ -84,8 +80,7 @@ export default Redux.connect(
       stockCodes: state.stockCodes,
       searchList: state.searchList,
       searchTerm: state.searchTerm,
-      symbolsActive: state.symbolsActive,
-      stockData: state.stockData
+      symbolsActive: state.symbolsActive
     }
   }
 )(Search);

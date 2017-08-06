@@ -14,6 +14,8 @@ var fetchStockSymbols = firebaseRef.child("symbolsActive");
 fetchStockSymbols.on("value", (data)=>{
   if (data.exists()) {
     store.dispatch(actions.fetchSymbols());
+  } else {
+    store.dispatch(actions.addCurrentlyActiveSymbols([]));
   }
 });
 

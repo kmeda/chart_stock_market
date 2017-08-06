@@ -10,15 +10,16 @@ class SearchList extends Component {
   }
 
   handleClick(code){
-    var {dispatch} = this.props;
+    var {dispatch, symbolsActive} = this.props;
 
-    // dispatch action to call api to get data
-    dispatch(actions.getStockDataAndPushToFirebase(code));
-    // dispatch action to add stock data to redux state
-
-    // dispatch action to clear search results
+    //if error ? throw error else update state with stock data
+    if (_.includes(symbolsActive, code)) {
+      alert("Symbol already added.");
+      return;
+    } else {
+      dispatch(actions.getStockDataAndPushToFirebase(code));
+    }
     dispatch(actions.clearSearchList());
-
   }
 
 
@@ -46,7 +47,8 @@ class SearchList extends Component {
 export default Redux.connect(
   (state)=>{
     return {
-      searchList: state.searchList
+      searchList: state.searchList,
+      symbolsActive: state.symbolsActive
     }
   }
 )(SearchList);
