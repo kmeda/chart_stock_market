@@ -33,7 +33,7 @@ export var stockDataReducer = (state=[], action)=>{
   switch (action.type) {
     case "ADD_STOCK_DATA":
       return state.concat(action.payload);
-    case "REMOVE_STOCK_DATA":
+    case "FILTER_STOCK_DATA":
       return action.payload;
     default:
       return state;
@@ -43,9 +43,24 @@ export var stockDataReducer = (state=[], action)=>{
 
 export var symbolsActiveReducer = (state=[], action)=>{
   switch (action.type) {
-    case "ADD_CUURENTLY_ACTIVE_SYMBOLS":
-      return action.payload
+    case "ADD_CUURENTLY_ACTIVE_STOCK_CODE":
+      return [...state, action.payload];
+    case "RESET_CURRENTLY_ACTIVE_STOCK_CODES":
+      return action.payload;
+    case "SET_CURRENTLY_ACTIVE_STOCK_CODES":
+      return action.payload;
     default:
     return state;
+  }
+}
+
+export var removeEventReducer = (state={setFlag: true}, action)=>{
+  switch (action.type) {
+    case "SET_REMOVE_FLAG":
+      return {
+        setFlag: action.flag
+      }
+    default:
+      return state;
   }
 }

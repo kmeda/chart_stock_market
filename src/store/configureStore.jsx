@@ -5,7 +5,8 @@ import {  stockCodesReducer,
           searchListReducer,
           searchTermReducer,
           stockDataReducer,
-          symbolsActiveReducer
+          symbolsActiveReducer,
+          removeEventReducer
           } from '../reducers/reducers.jsx';
 
 export var configure = (initialState = {}) => {
@@ -15,7 +16,8 @@ export var configure = (initialState = {}) => {
     searchList: searchListReducer,
     searchTerm: searchTermReducer,
     stockData: stockDataReducer,
-    symbolsActive: symbolsActiveReducer
+    symbolsActive: symbolsActiveReducer,
+    removeEvent: removeEventReducer
   });
 
   var store = Redux.createStore(

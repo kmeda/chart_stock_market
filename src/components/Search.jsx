@@ -41,17 +41,29 @@ class Search extends Component {
 
   handleSubmit(e){
     e.preventDefault();
-    var {dispatch, searchTerm, symbolsActive} = this.props;
+    var {dispatch, searchTerm, symbolsActive, stockCodes} = this.props;
 
     if (searchTerm === '' || searchTerm.length < 2) {
       return;
     }
-    //if error ? throw error else update state with stock data
+
     if (_.includes(symbolsActive, searchTerm)) {
       alert("Symbol already added.");
       return;
     } else {
-      dispatch(actions.getStockDataAndPushToFirebase(searchTerm));
+      // check if symbol exists in database
+        var extractCodesfromState = stockCodes.map((stock)=>{
+          return stock.Symbol;
+        });
+
+      if (_.includes(extractCodesfromState, searchTerm.toUpperCase())) {
+        dispatch(actions.setRemoveFlag(true));
+        dispatch(actions.addStockCodeToFirebase(searchTerm));
+      } else {
+        alert(searchTerm + " is either invalid or not listed.");
+      }
+
+
     }
 
     dispatch(actions.clearSearchList());

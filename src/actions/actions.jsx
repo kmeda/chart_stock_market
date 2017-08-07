@@ -29,8 +29,6 @@ export var clearSearchTerm = ()=>{
     type: "CLEAR_SEARCH_TERM"
   }
 }
-
-
 //Filter the list and return matched symbols
 export var setSearchList = (payload)=>{
   return {
@@ -45,61 +43,81 @@ export var clearSearchList = ()=>{
 }
 
 
-//Fetch data for specific stock and set state then push symbol to firebase
-export var getStockDataAndPushToFirebase = (code)=>{
-  return (dispatch, getState)=>{
-
-    var stockData;
-    var fetchStockData = axios.get(`https://chart-stocks-fcc.herokuapp.com/quandl_api/get_stock?code=${code}`).then((res)=>{
-      stockData = {symbol: code, ...res.data.data};
-      console.log(stockData);
-
-  }, (error)=> alert(`No response from server. Please try again.`));
-
-    fetchStockData.then(()=>{
-      if (Object.keys(stockData).length < 2) {
-        alert(`Incorrect Stock code or Data not supplied by API for ${code}.`);
-        return;
-      } else {
-        dispatch(addStockData(stockData));
-        // DISPATCH AN ACTION TO PUSH SYMBOL TO FIREBASE
-        dispatch(addStockCodeToFirebase(stockData.symbol))
-      }
-    });
-  }
-}
-
+// Add stock code to firebase
 export var addStockCodeToFirebase = (code)=>{
   return (dispatch, getState) => {
     var pushSymbol = firebaseRef.child("symbolsActive");
-    pushSymbol.push(code);
+
+    var url = `https://chart-stocks-fcc.herokuapp.com/quandl_api/get_stock?code=${code}`;
+
+    axios.get(url).then((res)=>{
+      if (!res.data.response) {
+        pushSymbol.push(code);
+      } else {
+        alert(res.data.response.data.quandl_error.message);
+      }
+    });
+
   }
 }
 
+//fetch all sybols for initial data load
+export var fetchSymbols = ()=>{
+  return (dispatch, getState) => {
+    var fetchStockSymbols = firebaseRef.child("symbolsActive");
+    fetchStockSymbols.once("value", (data)=>{
+      if (data.exists()) {
+        var codes = Object.values(data.val());
+        dispatch(setCurrentlyActiveStockCodes(codes));
+      }
+    })
+  }
+}
 
-// get filteredstock data and new stock codes - fetch new stockdata - dispatch combined data to state.
+// Remove stock code form firebase
+export var removeStockCodeFromFirebaase = (code)=>{
+  return (dispatch, getState) =>{
 
-export var updateClientWithStockData = (filteredStocks, newSymbols)=>{
+  }
+}
+
+//
+export var updateClientWithStockData = (newSymbols)=>{
   return (dispatch, getState)=>{
-    //console.log("Current stocks on all clients: " + filteredStocks);
-    //console.log("Stock data to be added for: "+ newSymbols);
 
-    var newStockData = filteredStocks;
+    // console.log("___________***___________");
+    // console.log(newSymbols);
+    // Check to see if the length of new symbols
+    var newStockData = [];
 
-    var getAllStocks = newSymbols.map((symbol)=>{
-      var url = `https://chart-stocks-fcc.herokuapp.com/quandl_api/get_stock?code=${symbol}`;
-      return axios.get(url).then((res)=>{
-        var stockData = {...res, symbol: symbol}
-        newStockData.push(stockData);
-      });
+    //check if stocks already exist in state ? filter them out
+    var existingStockData = getState().stockData;
+    var existingSymbols = existingStockData.map((stock)=>{
+      return stock.symbol;
+    });
+    // console.log("Current stock data in client: "+existingSymbols);
+
+    var getNewStocks = newSymbols.map((symbol)=>{
+      if (!(_.includes(existingSymbols, symbol))) {
+        var url = `https://chart-stocks-fcc.herokuapp.com/quandl_api/get_stock?code=${symbol}`;
+        return axios.get(url).then((res)=>{
+          var stockData = {...res, symbol: symbol};
+          newStockData.push(stockData);
+        });
+      }
     });
 
-    axios.all(getAllStocks).then(()=>{
-      console.log(newStockData);
-      dispatch(addStockData(newStockData));
-    });
+    axios.all(getNewStocks).then(()=>{
+
+      if (getNewStocks.length > 0) {
+
+        dispatch(addStockData(newStockData));
+      }
+
+    }, (error) => alert(error));
   }
 }
+
 
 export var addStockData = (payload)=>{
   return {
@@ -108,24 +126,77 @@ export var addStockData = (payload)=>{
   }
 }
 
+export var filterStockData = (payload) => {
+  return {
+    type: "FILTER_STOCK_DATA",
+    payload
+  }
+}
 
 //actions to fetch symbols from firebase and update state
 
-export var fetchSymbols = ()=>{
-  return (dispatch, getState)=>{
-    var getSymbols = firebaseRef.child("symbolsActive");
-    getSymbols.once("value", (data)=>{
+export var removeStockCodefromClient = () =>{
+  return (dispatch, getState) => {
+
+    // console.log("**************************************************");
+
+    //set flag to false
+    dispatch(setRemoveFlag(false));
+
+    var getCurrentCodes = firebaseRef.child("symbolsActive");
+
+    getCurrentCodes.once("value", (data)=>{
       if (data.exists()) {
-        var symbols = Object.values(data.val());
-        dispatch(addCurrentlyActiveSymbols(symbols));
+        var currentCodes = Object.values(data.val());
+
+        // console.log("Filtered Codes: " + currentCodes);
+        dispatch(resetCurrentlyActiveStockCodes(currentCodes));
+        // dispatch action to set filtered stock data here...
+
+        var currentState = getState().stockData;
+        var filteredState = currentState.filter((stock)=>{
+            return _.includes(currentCodes, stock.symbol);
+        });
+        // console.log(filteredState);
+        dispatch(filterStockData(filteredState));
+        // dispatch(setRemoveFlag(true));
+        //set flag to true
+
+      } else {
+        dispatch(filterStockData([]));
+        dispatch(resetCurrentlyActiveStockCodes([]));
+        //set flag to true
+        // dispatch(setRemoveFlag(true));
       }
     });
   }
 }
 
-export var addCurrentlyActiveSymbols = (payload)=>{
+
+export var addCurrentlyActiveStockCode = (payload)=>{
   return {
-    type: "ADD_CUURENTLY_ACTIVE_SYMBOLS",
+    type: "ADD_CUURENTLY_ACTIVE_STOCK_CODE",
     payload
+  }
+}
+
+export var resetCurrentlyActiveStockCodes = (payload) => {
+  return {
+    type: "RESET_CURRENTLY_ACTIVE_STOCK_CODES",
+    payload
+  }
+}
+
+export var setCurrentlyActiveStockCodes = (payload) => {
+  return {
+    type: "SET_CURRENTLY_ACTIVE_STOCK_CODES",
+    payload
+  }
+}
+
+export var setRemoveFlag = (flag)=>{
+  return {
+    type: "SET_REMOVE_FLAG",
+    flag
   }
 }

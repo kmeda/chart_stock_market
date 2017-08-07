@@ -10,14 +10,37 @@ const actions = require('./actions/actions.jsx');
 var store = require('./store/configureStore.jsx').configure();
 
 
+store.dispatch(actions.getStockCodes());
+store.dispatch(actions.fetchSymbols());
+var newItems = false;
 var fetchStockSymbols = firebaseRef.child("symbolsActive");
-fetchStockSymbols.on("value", (data)=>{
-  if (data.exists()) {
-    store.dispatch(actions.fetchSymbols());
-  } else {
-    store.dispatch(actions.addCurrentlyActiveSymbols([]));
-  }
+
+
+fetchStockSymbols.on("child_removed", (data)=>{
+  // console.log("Realtime data removed: "+data.val());
+  store.dispatch(actions.removeStockCodefromClient());
 });
+
+fetchStockSymbols.on("child_added", (data)=>{
+  if (!newItems) {
+    // console.log("Fired because no existing items");
+    return;
+  }
+  if (data.exists()) {
+    // console.log("Realtime data added: " + data.val());
+    store.dispatch(actions.addCurrentlyActiveStockCode(data.val()));
+  } else {
+    store.dispatch(actions.addCurrentlyActiveStockCode([]));
+  }
+
+});
+
+fetchStockSymbols.once("value", (data)=>{
+  if (data.exists()) {
+    // newItems = true;
+  }
+  newItems = true;
+})
 
 ReactDOM.render(
   <Provider store={store}>

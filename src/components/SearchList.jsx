@@ -17,7 +17,8 @@ class SearchList extends Component {
       alert("Symbol already added.");
       return;
     } else {
-      dispatch(actions.getStockDataAndPushToFirebase(code));
+      dispatch(actions.setRemoveFlag(true));
+      dispatch(actions.addStockCodeToFirebase(code));
     }
     dispatch(actions.clearSearchList());
   }

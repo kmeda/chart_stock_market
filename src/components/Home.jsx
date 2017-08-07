@@ -5,6 +5,7 @@ import _ from "lodash";
 import axios from "axios";
 
 import SearchList from "./SearchList.jsx";
+import StockList from "./StockList.jsx";
 
 const actions = require("../actions/actions.jsx");
 
@@ -16,67 +17,27 @@ class Home extends Component {
 
   }
 
-  componentWillMount(){
-    this.props.dispatch(actions.getStockCodes());
-    this.props.dispatch(actions.fetchSymbols());
-  }
-
   componentWillReceiveProps(nextProps){
-    //listening to props from firebase
-    //when user adds or removes a stock I receive the stock codes.
+    var {dispatch, removeEvent} = this.props;
 
-    //I verify and make sure that my state has stockdata only for these codes
-
-    //Pseudo code
-    //Remove operation
-      // map through the state
-      // filter if stock code not in props
-      // dispatch filtered payload removing stocks
-
-    //Add Operation
-    // for each of the stock codes
-    // map through the state
-    // if stock code not in props
-    // dispatch get request and add stock data to state
-    if (nextProps.symbolsActive.length !== this.props.symbolsActive.length) {
-
-      // console.log("Realtime Update: " + nextProps.symbolsActive);
-
-      var {dispatch, stockData} = this.props;
-
-      var filteredStocks = stockData.filter((stock)=>{
-          return _.includes(nextProps.symbolsActive, stock.symbol);
-      });
-      //dispatch(actions.addStockData(filteredStocks));
-      // console.log("Stocks currently active on all clients: "+filteredStocks);
-
-      // send filtered data and stock codes not in current state
-      var currentSymbols = stockData.map((symbol)=>{
-        return symbol.symbol;
-      });
-      // console.log("Current symbols: " + currentSymbols);
-
-      var newSymbols = nextProps.symbolsActive.filter((symbol)=>{
-        return !(_.includes(currentSymbols, symbol));
-      })
-      // console.log("New symbols: " + newSymbols);
-
-      dispatch(actions.updateClientWithStockData(filteredStocks, newSymbols));
+    if (nextProps.removeEvent.setFlag === true) {
+      console.log("Invoked");
+      dispatch(actions.updateClientWithStockData(nextProps.symbolsActive));
     }
-  }
 
+  }
 
 
   render(){
 
         var {stockCodes} = this.props;
 
-        var stockSymbolsLoad = ()=>{
+        var loadstockSymbols = ()=>{
             if (stockCodes.length > 0) {
               return <Search />;
             } else {
               return <div className="sk-loading-prog">
-                <i className="fa fa-refresh fa-spin QQfa-fw"></i>
+                <i className="fa fa-refresh fa-spin fa-fw"></i>
                 <span>Loading Stock Symbols...</span>
               </div>
             }
@@ -92,21 +53,14 @@ class Home extends Component {
           <div className="sk-chart-list-container">
             <div className="sk-chart-list-header">
 
-              {stockSymbolsLoad()}
+              {loadstockSymbols()}
 
               <div className="sk-search-list">
                 <SearchList />
               </div>
             </div>
 
-              <div className="sk-chart-list-odd"></div>
-              <div className="sk-chart-list-even"></div>
-              <div className="sk-chart-list-odd"></div>
-              <div className="sk-chart-list-even"></div>
-              <div className="sk-chart-list-odd"></div>
-              <div className="sk-chart-list-even"></div>
-              <div className="sk-chart-list-odd"></div>
-              <div className="sk-chart-list-even"></div>
+            <StockList />
 
           </div>
         </div>
@@ -119,8 +73,8 @@ export default Redux.connect(
   (state)=>{
     return {
       stockCodes: state.stockCodes,
-      stockData: state.stockData,
-      symbolsActive: state.symbolsActive
+      symbolsActive: state.symbolsActive,
+      removeEvent: state.removeEvent
     }
   }
 )(Home);
