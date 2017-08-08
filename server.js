@@ -19,8 +19,7 @@ app.get("/alphaadv_api/get_stock", (req, res) => {
 
   //monitoring requests
   console.log(req.query.code);
-
-  // var url = `https://www.quandl.com/api/v3/datasets/WIKI/${req.query.code.toUpperCase()}/data.json?start_date=2016-08-01&api_key=${process.env.API_KEY}`;
+  
   var url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${req.query.code.toUpperCase()}&apikey=${process.env.API_KEY}`;
 
   var stockData;

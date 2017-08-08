@@ -48,8 +48,7 @@ export var addStockCodeToFirebase = (code)=>{
   return (dispatch, getState) => {
     var pushSymbol = firebaseRef.child("symbolsActive");
 
-    // var url = `https://chart-stocks-fcc.herokuapp.com/quandl_api/get_stock?code=${code}`;
-    var url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${code}&apikey=${process.env.API_KEY}`;
+    var url = `https://chart-stocks-fcc.herokuapp.com/alphaadv_api/get_stock?code=${code}`;
 
     axios.get(url).then((res)=>{
       if (res.data["Error Message"]) {
