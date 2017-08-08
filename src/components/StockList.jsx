@@ -9,6 +9,11 @@ class StockList extends Component {
     super(props);
   }
 
+  removeStock(symbol){
+    var {dispatch} = this.props;
+    // dispatch(actions.removeStockCodeFromFirebase(symbol));
+  }
+
   render(){
 
     var {stockData} = this.props;
@@ -18,12 +23,12 @@ class StockList extends Component {
         return stockData.map((stock, index)=>{
           return <div key={index} className={(index%2) ? "sk-chart-list-even" : "sk-chart-list-odd"}>
             <div className="sk-stock-code-name">{stock.symbol}</div>
-            <div className="sk-stock-code-data">{stock.data.data.dataset_data.data[0][1]}</div>
-            <div className="sk-stock-code-data">{stock.data.data.dataset_data.data[0][2]}</div>
-            <div className="sk-stock-code-data">{stock.data.data.dataset_data.data[0][3]}</div>
-            <div className="sk-stock-code-data">{stock.data.data.dataset_data.data[0][4]}</div>
-            <div className="sk-stock-code-data">{stock.data.data.dataset_data.data[0][5]}</div>
-            <div className="sk-remove-stock"><i className="fa fa-trash"></i></div>
+            <div className="sk-stock-code-data">{stock["Time Series (Daily)"][Object.keys(stock["Time Series (Daily)"])[0]]["1. open"]}</div>
+            <div className="sk-stock-code-data">{stock["Time Series (Daily)"][Object.keys(stock["Time Series (Daily)"])[0]]["2. high"]}</div>
+            <div className="sk-stock-code-data">{stock["Time Series (Daily)"][Object.keys(stock["Time Series (Daily)"])[0]]["3. low"]}</div>
+            <div className="sk-stock-code-data">{stock["Time Series (Daily)"][Object.keys(stock["Time Series (Daily)"])[0]]["4. close"]}</div>
+            <div className="sk-stock-code-data">{stock["Time Series (Daily)"][Object.keys(stock["Time Series (Daily)"])[0]]["6. volume"]}</div>
+            <div className="sk-remove-stock"><i className="fa fa-trash" onClick={this.removeStock.bind(this, stock.symbol)}></i></div>
           </div>
         })
       }

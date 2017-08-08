@@ -13,14 +13,16 @@ res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Ty
 next();
 });
 
-app.get("/quandl_api/get_stock", (req, res) => {
+app.get("/alphaadv_api/get_stock", (req, res) => {
 
   //make the request here with request parameters and send json response back
 
   //monitoring requests
   console.log(req.query.code);
 
-  var url = `https://www.quandl.com/api/v3/datasets/WIKI/${req.query.code.toUpperCase()}/data.json?start_date=2016-08-01&api_key=YjMgSyq8mQZXziPXB3J8`;
+  // var url = `https://www.quandl.com/api/v3/datasets/WIKI/${req.query.code.toUpperCase()}/data.json?start_date=2016-08-01&api_key=${process.env.API_KEY}`;
+  var url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${req.query.code.toUpperCase()}&apikey=${process.env.API_KEY}`;
+
   var stockData;
   axios.get(url).then((response)=>{
     let json = CircularJSON.stringify(response);

@@ -52,24 +52,25 @@ class Search extends Component {
       return;
     } else {
       // check if symbol exists in database
-        var extractCodesfromState = stockCodes.map((stock)=>{
-          return stock.Symbol;
-        });
+        // var extractCodesfromState = stockCodes.map((stock)=>{
+        //   return stock.Symbol;
+        // });
 
-      if (_.includes(extractCodesfromState, searchTerm.toUpperCase())) {
-        dispatch(actions.setRemoveFlag(true));
-
-        //************************************************************
-        //Only set firebase value if server respnse in OK
-        //frist thing in the morning
-        //************************************************************
-
-        dispatch(actions.addStockCodeToFirebase(searchTerm));
-
-      } else {
-        alert(searchTerm + " is either invalid or not listed.");
-      }
-
+      // if (_.includes(extractCodesfromState, searchTerm.toUpperCase())) {
+      //   dispatch(actions.setRemoveFlag(true));
+      //
+      //   //************************************************************
+      //   //Only set firebase value if server respnse in OK
+      //   //frist thing in the morning
+      //   //************************************************************
+      //
+      //   dispatch(actions.addStockCodeToFirebase(searchTerm));
+      //
+      // } else {
+      //   alert(searchTerm + " is either invalid or not listed.");
+      // }
+      dispatch(actions.setRemoveFlag(true));
+      dispatch(actions.addStockCodeToFirebase(searchTerm));
 
     }
 

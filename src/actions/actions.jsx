@@ -48,14 +48,16 @@ export var addStockCodeToFirebase = (code)=>{
   return (dispatch, getState) => {
     var pushSymbol = firebaseRef.child("symbolsActive");
 
-    var url = `https://chart-stocks-fcc.herokuapp.com/quandl_api/get_stock?code=${code}`;
+    // var url = `https://chart-stocks-fcc.herokuapp.com/quandl_api/get_stock?code=${code}`;
+    var url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${code}&apikey=${process.env.API_KEY2}`;
 
     axios.get(url).then((res)=>{
-      if (res.data.response) {
-        alert(res.data.response.data.quandl_error.message);
+      if (res.data["Error Message"]) {
+        alert("Invalid API Call.");
       } else {
         pushSymbol.push(code);
       }
+      console.log(res);
     });
 
   }
@@ -75,7 +77,7 @@ export var fetchSymbols = ()=>{
 }
 
 // Remove stock code form firebase
-export var removeStockCodeFromFirebaase = (code)=>{
+export var removeStockCodeFromFirebase = (code)=>{
   return (dispatch, getState) =>{
 
   }
@@ -99,21 +101,20 @@ export var updateClientWithStockData = (newSymbols)=>{
 
     var getNewStocks = newSymbols.map((symbol)=>{
       if (!(_.includes(existingSymbols, symbol))) {
-        var url = `https://chart-stocks-fcc.herokuapp.com/quandl_api/get_stock?code=${symbol}`;
+        var url = `https://chart-stocks-fcc.herokuapp.com/alphaadv_api/get_stock?code=${symbol}`;
+        // var url = `http://localhost:3050/alphaadv_api/get_stock?code=${symbol}`;
         return axios.get(url).then((res)=>{
-          var stockData = {...res, symbol: symbol};
+          var stockData = {...res.data.data, symbol: symbol};
+          console.log(stockData);
           newStockData.push(stockData);
         });
       }
     });
 
     axios.all(getNewStocks).then(()=>{
-
       if (getNewStocks.length > 0) {
-
         dispatch(addStockData(newStockData));
       }
-
     }, (error) => alert(error));
   }
 }
