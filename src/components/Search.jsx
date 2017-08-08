@@ -58,7 +58,14 @@ class Search extends Component {
 
       if (_.includes(extractCodesfromState, searchTerm.toUpperCase())) {
         dispatch(actions.setRemoveFlag(true));
+
+        //************************************************************
+        //Only set firebase value if server respnse in OK
+        //frist thing in the morning
+        //************************************************************
+
         dispatch(actions.addStockCodeToFirebase(searchTerm));
+
       } else {
         alert(searchTerm + " is either invalid or not listed.");
       }

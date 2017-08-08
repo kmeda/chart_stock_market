@@ -6,6 +6,7 @@ import axios from "axios";
 
 import SearchList from "./SearchList.jsx";
 import StockList from "./StockList.jsx";
+import StockChart from "./StockChart.jsx";
 
 const actions = require("../actions/actions.jsx");
 
@@ -48,20 +49,23 @@ class Home extends Component {
       <div className="sk-container">
         <div className="sk-header"></div>
         <div className="sk-inner-wrapper">
-
-          <div className="sk-chart-component-container">Add Chart Component here...</div>
+          <div className="sk-chart-component-container">
+            <StockChart />
+          </div>
           <div className="sk-chart-list-container">
             <div className="sk-chart-list-header">
-
               {loadstockSymbols()}
-
+              <div className="sk-chart-list-header-name">Stock Name</div>
+              <div className="sk-chart-list-header-data">Open</div>
+              <div className="sk-chart-list-header-data">High</div>
+              <div className="sk-chart-list-header-data">Low</div>
+              <div className="sk-chart-list-header-data">Close</div>
+              <div className="sk-chart-list-header-data">Volume</div>
               <div className="sk-search-list">
                 <SearchList />
               </div>
             </div>
-
             <StockList />
-
           </div>
         </div>
       </div>

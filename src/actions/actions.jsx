@@ -51,10 +51,10 @@ export var addStockCodeToFirebase = (code)=>{
     var url = `https://chart-stocks-fcc.herokuapp.com/quandl_api/get_stock?code=${code}`;
 
     axios.get(url).then((res)=>{
-      if (!res.data.response) {
-        pushSymbol.push(code);
-      } else {
+      if (res.data.response) {
         alert(res.data.response.data.quandl_error.message);
+      } else {
+        pushSymbol.push(code);
       }
     });
 

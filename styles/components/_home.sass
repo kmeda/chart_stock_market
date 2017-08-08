@@ -6,6 +6,7 @@ body
 .sk-container
   width: 100%
   min-height: 100vh
+  // height: 100%
   background-color: #464545
   padding-bottom: 25px
   .sk-header
@@ -29,11 +30,27 @@ body
       box-shadow: 0 7px 15px rgba(0,0,0,0.8)
 
       .sk-chart-list-header
+        display: flex
         position: relative
         height: 22px
         width: 100%
         background-color: #bdbdbd
-        border-bottom: 2px solid
+        border-bottom: 2px solid black
+        font-family: "Fira sans"
+        font-size: 0.8em
+        .sk-chart-list-header-name
+          display: flex
+          align-items: center
+          justify-content: center
+          width: 35%
+          border-bottom: 1px solid #f16212
+        .sk-chart-list-header-data
+          display: flex
+          align-items: center
+          justify-content: center
+          width: 13%
+          border-bottom: 1px solid #f16212
+          cursor: default
         .sk-loading-prog
           position: absolute
           height: 28px
@@ -83,6 +100,7 @@ body
           background-color: white
           transform: translateY(24px)
           overflow-Y: scroll
+          z-index: 1
         .sk-list-item
           width: 98%
           height: auto
@@ -97,20 +115,67 @@ body
             font-size: 0.9em
 
       .sk-chart-list-odd
+        display: flex
         height: 35px
         width: 100%
         background-color: #373737
         color: white
+        font-family: "Fira sans"
+        position: relative
         &:hover
           border-left: 3px solid #f16212
+        .sk-remove-stock
+          position: absolute
+          i
+            transform: translate(1132px, 9px)
+            cursor: pointer
+            font-size: 0.8em
+            &:hover
+              color: red
+
+        .sk-stock-code-name
+          display: flex
+          align-items: center
+          justify-content: center
+          width: 35%
+        .sk-stock-code-data
+          display: flex
+          align-items: center
+          justify-content: center
+          width: 13%
+          font-family: "Fira sans"
+          font-size: 0.8em
+          cursor: default
       .sk-chart-list-even
+        display: flex
         height: 35px
         width: 100%
         background-color: #4b4b4b
         color: white
+        font-family: "Fira sans"
+        position: relative
         &:hover
           border-left: 3px solid #f16212
-
+        .sk-remove-stock
+          position: absolute
+          i
+            transform: translate(1132px, 9px)
+            cursor: pointer
+            font-size: 0.8em
+            &:hover
+              color: red
+        .sk-stock-code-name
+          display: flex
+          align-items: center
+          justify-content: center
+          width: 35%
+        .sk-stock-code-data
+          display: flex
+          align-items: center
+          justify-content: center
+          width: 13%
+          font-size: 0.8em
+          cursor: default
 @media (max-device-height: 800px)
   .sk-container
     min-height: 130vh !important
