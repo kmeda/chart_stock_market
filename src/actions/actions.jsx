@@ -51,7 +51,7 @@ export var addStockCodeToFirebase = (code)=>{
     var url = `https://chart-stocks-fcc.herokuapp.com/alphaadv_api/get_stock?code=${code}`;
 
     axios.get(url).then((res)=>{
-      if (res.data["Error Message"]) {
+      if (res.data.data["Error Message"]) {
         alert("Invalid API Call.");
       } else {
         pushSymbol.push(code);
