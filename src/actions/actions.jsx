@@ -76,9 +76,15 @@ export var fetchSymbols = ()=>{
 }
 
 // Remove stock code form firebase
-export var removeStockCodeFromFirebase = (code)=>{
+export var removeStockCodeFromFirebase = (symbol)=>{
   return (dispatch, getState) =>{
-
+    var fetchStockSymbols = firebaseRef.child("symbolsActive");
+        fetchStockSymbols.orderByValue().equalTo(symbol).once('value', function(snapshot) {
+          console.log(Object.keys(snapshot.val()));
+          var removeSymbol = Object.keys(snapshot.val());
+          fetchStockSymbols.child(removeSymbol[0]).remove();
+          // console.log(snapshot.val());
+        });
   }
 }
 

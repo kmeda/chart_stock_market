@@ -11,7 +11,7 @@ class StockList extends Component {
 
   removeStock(symbol){
     var {dispatch} = this.props;
-    // dispatch(actions.removeStockCodeFromFirebase(symbol));
+    dispatch(actions.removeStockCodeFromFirebase(symbol));
   }
 
   render(){
