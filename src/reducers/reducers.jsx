@@ -54,12 +54,10 @@ export var symbolsActiveReducer = (state=[], action)=>{
   }
 }
 
-export var removeEventReducer = (state={setFlag: true}, action)=>{
+export var isFetchingReducer = (state=false, action)=>{
   switch (action.type) {
-    case "SET_REMOVE_FLAG":
-      return {
-        setFlag: action.flag
-      }
+    case "IS_LOADING":
+      return action.flag;
     default:
       return state;
   }

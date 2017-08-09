@@ -19,12 +19,10 @@ class Home extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    var {dispatch, removeEvent} = this.props;
+    var {dispatch} = this.props;
 
-    if (nextProps.removeEvent.setFlag === true) {
       console.log("Invoked");
       dispatch(actions.updateClientWithStockData(nextProps.symbolsActive));
-    }
 
   }
 
@@ -77,8 +75,7 @@ export default Redux.connect(
   (state)=>{
     return {
       stockCodes: state.stockCodes,
-      symbolsActive: state.symbolsActive,
-      removeEvent: state.removeEvent
+      symbolsActive: state.symbolsActive
     }
   }
 )(Home);

@@ -51,25 +51,7 @@ class Search extends Component {
       alert("Symbol already added.");
       return;
     } else {
-      // check if symbol exists in database
-        // var extractCodesfromState = stockCodes.map((stock)=>{
-        //   return stock.Symbol;
-        // });
 
-      // if (_.includes(extractCodesfromState, searchTerm.toUpperCase())) {
-      //   dispatch(actions.setRemoveFlag(true));
-      //
-      //   //************************************************************
-      //   //Only set firebase value if server respnse in OK
-      //   //frist thing in the morning
-      //   //************************************************************
-      //
-      //   dispatch(actions.addStockCodeToFirebase(searchTerm));
-      //
-      // } else {
-      //   alert(searchTerm + " is either invalid or not listed.");
-      // }
-      dispatch(actions.setRemoveFlag(true));
       dispatch(actions.addStockCodeToFirebase(searchTerm));
 
     }
@@ -78,16 +60,20 @@ class Search extends Component {
   }
 
   render(){
-
+    var {isFetching} = this.props;
     return (
       <div>
-        <form onSubmit={this.handleSubmit.bind(this)}>
+        <form onSubmit={this.handleSubmit.bind(this)} >
           <input
             className="sk-stock-search"
             placeholder="Search Stock.."
             onChange={this.handleSearch.bind(this)}
-            ref="searchTerm"/>
-          <button className="sk-stock-search-btn" onClick={this.handleSubmit.bind(this)}>Go</button>
+            ref="searchTerm"
+            disabled={isFetching ? "disabled" : ""}/>
+          <button className="sk-stock-search-btn"
+                  onClick={this.handleSubmit.bind(this)}
+                  disabled={isFetching}
+                  >Go</button>
       </form>
     </div>
   );
@@ -100,7 +86,8 @@ export default Redux.connect(
       stockCodes: state.stockCodes,
       searchList: state.searchList,
       searchTerm: state.searchTerm,
-      symbolsActive: state.symbolsActive
+      symbolsActive: state.symbolsActive,
+      isFetching: state.isFetching
     }
   }
 )(Search);

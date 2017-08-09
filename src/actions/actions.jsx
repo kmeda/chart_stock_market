@@ -46,6 +46,7 @@ export var clearSearchList = ()=>{
 // Add stock code to firebase
 export var addStockCodeToFirebase = (code)=>{
   return (dispatch, getState) => {
+    dispatch(setIsFetchingFlag(true));
     var pushSymbol = firebaseRef.child("symbolsActive");
 
     // var url = `https://chart-stocks-fcc.herokuapp.com/alphaadv_api/get_stock?code=${code}`;
@@ -54,6 +55,7 @@ export var addStockCodeToFirebase = (code)=>{
     axios.get(url).then((res)=>{
       if (res.data["Error Message"]) {
         alert("Invalid API Call.");
+        dispatch(setIsFetchingFlag(false));
       } else {
         pushSymbol.push(code);
       }
@@ -92,7 +94,7 @@ export var removeStockCodeFromFirebase = (symbol)=>{
 //
 export var updateClientWithStockData = (newSymbols)=>{
   return (dispatch, getState)=>{
-
+    dispatch(setIsFetchingFlag(true));
     // console.log("___________***___________");
     // console.log(newSymbols);
     // Check to see if the length of new symbols
@@ -121,7 +123,10 @@ export var updateClientWithStockData = (newSymbols)=>{
     axios.all(getNewStocks).then(()=>{
       if (getNewStocks.length > 0) {
         dispatch(addStockData(newStockData));
+        dispatch(setIsFetchingFlag(false));
+        return;
       }
+      dispatch(setIsFetchingFlag(false));
     }, (error) => alert(error));
   }
 }
@@ -149,7 +154,7 @@ export var removeStockCodefromClient = () =>{
     // console.log("**************************************************");
 
     //set flag to false
-    dispatch(setRemoveFlag(false));
+    // dispatch(setRemoveFlag(false));
 
     var getCurrentCodes = firebaseRef.child("symbolsActive");
 
@@ -202,9 +207,9 @@ export var setCurrentlyActiveStockCodes = (payload) => {
   }
 }
 
-export var setRemoveFlag = (flag)=>{
+export var setIsFetchingFlag = (flag) => {
   return {
-    type: "SET_REMOVE_FLAG",
+    type: "IS_LOADING",
     flag
   }
 }
