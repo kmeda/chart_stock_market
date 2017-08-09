@@ -73,7 +73,7 @@ class Search extends Component {
           <button className="sk-stock-search-btn"
                   onClick={this.handleSubmit.bind(this)}
                   disabled={isFetching}
-                  >Go</button>
+                  >{isFetching? <i className='sk-loading-indicator fa fa-circle-o-notch fa-spin fa-fw'></i> : "Go"}</button>
       </form>
     </div>
   );
