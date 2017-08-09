@@ -107,10 +107,11 @@ export var updateClientWithStockData = (newSymbols)=>{
 
     var getNewStocks = newSymbols.map((symbol)=>{
       if (!(_.includes(existingSymbols, symbol))) {
-        var url = `https://chart-stocks-fcc.herokuapp.com/alphaadv_api/get_stock?code=${symbol}`;
+        // var url = `https://chart-stocks-fcc.herokuapp.com/alphaadv_api/get_stock?code=${symbol}`;
+        var url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${symbol}&apikey=${process.env.API_KEY}`;
         // var url = `http://localhost:3050/alphaadv_api/get_stock?code=${symbol}`;
         return axios.get(url).then((res)=>{
-          var stockData = {...res.data.data, symbol: symbol};
+          var stockData = {...res.data, symbol: symbol};
           console.log(stockData);
           newStockData.push(stockData);
         });
