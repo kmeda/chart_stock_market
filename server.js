@@ -8,33 +8,6 @@ var favicon = require('serve-favicon');
 const app = express();
 app.use(favicon(path.join(__dirname + '/favicon.ico')));
 
-app.use(function(req, res, next){
-res.header('Access-Control-Allow-Origin', "*");
-res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept");
-
-next();
-});
-
-app.get("/alphaadv_api/get_stock", (req, res) => {
-
-  //make the request here with request parameters and send json response back
-
-  //monitoring requests
-  console.log(req.query.code);
-
-  var url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${req.query.code.toUpperCase()}&apikey=${process.env.API_KEY}`;
-
-  var stockData;
-  axios.get(url).then((response)=>{
-    let json = CircularJSON.stringify(response);
-    res.send(json);
-  },(error)=> {
-    let err = CircularJSON.stringify(error);
-    res.send(err);
-  });
-});
-
 
 if (process.env.NODE_ENV !== 'production') {
   const webpackMiddleware = require('webpack-dev-middleware');
