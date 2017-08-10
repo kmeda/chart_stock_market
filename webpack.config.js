@@ -13,7 +13,7 @@ try {
 }
 
 const VENDOR_LIBS = [
-  'react', 'redux', 'react-redux', 'react-dom',
+  'react', 'redux', 'react-redux', 'react-dom', 'moment',
   'redux-form', 'redux-thunk', 'react-router-dom','firebase','lodash', 'react-highcharts'
 ];
 

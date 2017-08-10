@@ -114,7 +114,7 @@ export var updateClientWithStockData = (newSymbols)=>{
         // var url = `http://localhost:3050/alphaadv_api/get_stock?code=${symbol}`;
         return axios.get(url).then((res)=>{
           var stockData = {...res.data, symbol: symbol};
-          console.log(stockData);
+          console.log(res);
           newStockData.push(stockData);
         });
       }
