@@ -2,8 +2,11 @@ const express = require('express');
 const path = require('path');
 const axios = require("axios");
 const CircularJSON = require('circular-json');
+var favicon = require('serve-favicon');
+
 
 const app = express();
+app.use(favicon(path.join(__dirname + '/favicon.ico')));
 
 app.use(function(req, res, next){
 res.header('Access-Control-Allow-Origin', "*");
@@ -19,7 +22,7 @@ app.get("/alphaadv_api/get_stock", (req, res) => {
 
   //monitoring requests
   console.log(req.query.code);
-  
+
   var url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${req.query.code.toUpperCase()}&apikey=${process.env.API_KEY}`;
 
   var stockData;
