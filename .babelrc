@@ -1,8 +1,4 @@
 {
-  "presets": ["babel-preset-env","react", "es2015", "stage-0"],
-  "env": {
-        "development": {
-            "presets": ["react-hmre"]
-        }
-    }
+  "presets": ["babel-preset-env","react", "es2015", "stage-0"]
+
 }
