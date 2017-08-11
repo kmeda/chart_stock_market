@@ -6,8 +6,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "NODE_ENV=production npm run clean && webpack -p",
-    "serve": "webpack-dev-server --progress --inline --hot",
-    "start": "npm run clean && webpack -p && node server.js"
+    "serve": "webpack-dev-server --progress --inline --hot"
   },
   "author": "",
   "license": "ISC",
