@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "NODE_ENV=production npm run clean && webpack -p",
-    "serve": "webpack-dev-server --progress --inline --hot"
+    "build": "export NODE_ENV=production && npm run clean && webpack -p --progress --colors",
+    "serve": "webpack-dev-server --progress --inline --hot",
+    "postinstall": "npm run clean && webpack -p --progress"
   },
   "author": "",
   "license": "ISC",
